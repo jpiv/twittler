@@ -19,7 +19,7 @@
         var printTweets = function (stream, target, start)
         {
             var origHtml = start || ' ';          
-            target.html(start);
+            target.html(origHtml);
 
             var index = stream.length - 1;
             while(index >= 0){
@@ -53,7 +53,7 @@
         printTweets(streams.home, $('#home')); 
         setInterval(function()
           {   
-              printTweets(streams.home, $('#home'), false);
+              printTweets(streams.home, $('#home'));
           },1500);
       });
 
