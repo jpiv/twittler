@@ -35,7 +35,7 @@
             while(index >= 0){
               var tweet = stream[index];
               var $tweet = $('<div></div>');
-              var $anchor = $('<a href="#" data-usr="' + tweet.user +'"" class="user">' + tweet.user + '</a>');
+              var $anchor = $('<a href="#" data-usr="' + tweet.user +'" class="user">' + tweet.user + '</a>');
               var elapsed = Date.now() - tweet.created_at;
             
               $tweet.text('[' + genElapsedTime(elapsed) + ']@');
