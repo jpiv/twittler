@@ -8,9 +8,29 @@ h1
 	{
 		margin: 0;
 	}
+.left
+	{
+		margin: 0;
+		float: left;
+	}
+.right
+	{
+		margin: 0;
+		float: right;
+	}
 a:visited
 	{
 		color: blue;
+	}
+#stop
+	{
+		width: 50%;
+		height: 50%;
+	}
+#go
+	{
+		width: 45%;
+		height: 45%;
 	}
 #frame 
 	{

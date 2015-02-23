@@ -7,7 +7,13 @@
   </head>
   <body>
     <div id="frame">
-      <div id="home"></div>
+      <div id="home">
+          <h1 class="left">Tweets</h1>
+          <span class="right"><img src="stopsign.png" id="stop" class="right" alt="Stop Sign"></img></span>
+          <br>
+          <br>
+          <br>
+      </div>
       <div id="profile">
           <h1>Profile</h1>
       </div>
@@ -16,47 +22,91 @@
     <script>
 
       $(document).ready(function(){
+        var timeId;
+        var homeHead = $('#home').html();
+        var profileHead = $('#profile').html();
+
         var printTweets = function (stream, target, start)
         {
             var origHtml = start || ' ';          
+            var index = stream.length - 1;
             target.html(origHtml);
 
-            var index = stream.length - 1;
             while(index >= 0){
               var tweet = stream[index];
               var $tweet = $('<div></div>');
               var $anchor = $('<a href="#" data-usr="' + tweet.user +'"" class="user">' + tweet.user + '</a>');
-              $tweet.text('[' + tweet.created_at.toDateString() + ']@');
+              var elapsed = Date.now() - tweet.created_at;
+            
+              $tweet.text('[' + genElapsedTime(elapsed) + ']@');
               $tweet.append($anchor);
               $tweet.append($('<span>: ' + tweet.message + '</span>'));
               $tweet.appendTo(target);
               index -= 1;
             }
-            $()
-            addListeners();
+            
         };
+
+        var genElapsedTime = function(timeMilli)
+        {
+            var seconds = Math.floor(timeMilli / 1000);
+            var minutes = Math.floor(seconds / 60);
+            var hours = Math.floor(minutes / 60);
+
+            if(hours >= 1)
+              return hours + " Hours ago";
+            else if(minutes >= 1)
+              return minutes + " Minutes ago";
+            else
+              return seconds + " Seconds ago";
+
+        }
 
         var addListeners = function ()
         {
+            var runningFeed = true;
+
             $('.user').on('click', function (event)
               {
                   event.preventDefault();
                   var user = $(this).data('usr');
-                  var start = $("<div>"
-                                 + "<h1>Profile</h1>"
-                                  + "@" + user + '<br><br>');
+                  var usrHead = profileHead + "@" + user + '<br><br>';
 
-                  printTweets(streams.users[user], $('#profile'), start);
+                  printTweets(streams.users[user], $('#profile'), usrHead);
               });
-        }
 
-        printTweets(streams.home, $('#home')); 
-        setInterval(function()
-          {   
-              printTweets(streams.home, $('#home'));
-          },1500);
+            $('#home span.right').on('click', function ()
+              {
+                  if(runningFeed)
+                  {
+                      $(this).find('img:first').remove();
+                      $(this).prepend($('<img src="gosign.png" id="go" class="right" alt="Stop Sign"></img>'));
+                      runningFeed = false;
+                      clearInterval(timeId);
+                  }
+                  else
+                  {
+                      $(this).find('img:first').remove();
+                      $(this).prepend($('<img src="stopsign.png" id="stop" class="right" alt="Stop Sign"></img>'));
+                      runningFeed = true;
+                      startFeed();
+                  }
+              });
+          };
+
+        var startFeed = function ()
+        {
+            clearInterval(timeId);
+            printTweets(streams.home, $('#home'), homeHead); 
+            timeId = setInterval(function()
+              {   
+                  printTweets(streams.home, $('#home'), homeHead);
+                  addListeners();
+              },1500);
+        };
+
+        startFeed();
       });
-
     </script>
   </body>
 </html>
