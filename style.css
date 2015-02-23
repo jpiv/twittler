@@ -1,0 +1,31 @@
+body
+	{
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		margin: 0;
+	}
+
+#frame 
+	{
+		position: absolute;
+		width: 100%;
+		border-style: ridge;
+		height: 100%;
+	}
+#home
+	{
+		width: 50%;
+		position: absolute;
+		background-color: rgba(46, 120, 230, .4);
+		color: rgba(0,0,0,.8);
+		height: 100%;
+	}
+#profile
+	{
+		float: right;
+		width: 50%;
+		background-color: rgba(46, 120, 230, .75);
+		color: rgba(0,0,0,.8);
+		height: 100%;
+	}

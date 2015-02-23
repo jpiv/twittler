@@ -3,24 +3,34 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel='stylesheet' href="style.css" type='text/css'>
   </head>
   <body>
-    <a href="http://www.bookstrap.hackreactor.com">Hack Reactor Precours </a>
+    <div id="frame">
+      <div id="home">ddsfdgsdf</div>
+      <div id="profile">dsd<br><br><br>gsdfgd</div>
+    </div>
+
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+        var printTweets = function ()
+        {
+            var $body = $('body');
+            $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+            var index = streams.home.length - 1;
+            while(index >= 0){
+              var tweet = streams.home[index];
+              var $tweet = $('<div></div>');
+              $tweet.text('[' + tweet.created_at.toDateString() + ']@' + tweet.user + ': ' + tweet.message);
+              $tweet.appendTo($body);
+              index -= 1;
+            }
+        };
 
+      // printTweets(); 
+       // setInterval(printTweets,1500);
       });
 
     </script>
