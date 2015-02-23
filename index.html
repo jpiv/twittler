@@ -7,30 +7,54 @@
   </head>
   <body>
     <div id="frame">
-      <div id="home">ddsfdgsdf</div>
-      <div id="profile">dsd<br><br><br>gsdfgd</div>
+      <div id="home"></div>
+      <div id="profile">
+          <h1>Profile</h1>
+      </div>
     </div>
 
     <script>
 
       $(document).ready(function(){
-        var printTweets = function ()
+        var printTweets = function (stream, target, start)
         {
-            var $body = $('body');
-            $body.html('');
+            var origHtml = start || ' ';          
+            target.html(start);
 
-            var index = streams.home.length - 1;
+            var index = stream.length - 1;
             while(index >= 0){
-              var tweet = streams.home[index];
+              var tweet = stream[index];
               var $tweet = $('<div></div>');
-              $tweet.text('[' + tweet.created_at.toDateString() + ']@' + tweet.user + ': ' + tweet.message);
-              $tweet.appendTo($body);
+              var $anchor = $('<a href="#" data-usr="' + tweet.user +'"" class="user">' + tweet.user + '</a>');
+              $tweet.text('[' + tweet.created_at.toDateString() + ']@');
+              $tweet.append($anchor);
+              $tweet.append($('<span>: ' + tweet.message + '</span>'));
+              $tweet.appendTo(target);
               index -= 1;
             }
+            $()
+            addListeners();
         };
 
-      // printTweets(); 
-       // setInterval(printTweets,1500);
+        var addListeners = function ()
+        {
+            $('.user').on('click', function (event)
+              {
+                  event.preventDefault();
+                  var user = $(this).data('usr');
+                  var start = $("<div>"
+                                 + "<h1>Profile</h1>"
+                                  + "@" + user + '<br><br>');
+
+                  printTweets(streams.users[user], $('#profile'), start);
+              });
+        }
+
+        printTweets(streams.home, $('#home')); 
+        setInterval(function()
+          {   
+              printTweets(streams.home, $('#home'), false);
+          },1500);
       });
 
     </script>
